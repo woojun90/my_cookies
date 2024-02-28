@@ -15,6 +15,12 @@ def main():
         else:
             domain_name = sys.argv[1]
 
+    if not cookiejar:
+        try:
+            cookiejar = browser_cookie3.edge(domain_name=domain_name)
+        except Exception:
+            print("get cookie from Microsoft Edge failed", file=sys.stderr)
+            return
     try:
         cookiejar = browser_cookie3.chrome(domain_name=domain_name)
     except Exception:
@@ -26,16 +32,9 @@ def main():
         except Exception:
             print("get cookie from Firefox failed", file=sys.stderr)
 
-    if not cookiejar:
-        try:
-            cookiejar = browser_cookie3.edge(domain_name=domain_name)
-        except Exception:
-            print("get cookie from Microsoft Edge failed", file=sys.stderr)
-            return
-
     leetcode_cookies = list(
-        filter(lambda c: c.name in ("LEETCODE_SESSION", "csrftoken"), cookiejar)
-    )
+-        filter(lambda c: c.name in ("LEETCODE_SESSION", "csrftoken"), cookiejar)
+-    )
 
     if len(leetcode_cookies) < 2:
         print(
@@ -49,3 +48,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
